@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
+const API = "https://mern-todo-backend-lpva.onrender.com";
+
 function App() {
   const [task, setTask] = useState('');
   const [todos, setTodos] = useState([]);
   const [editId, setEditId] = useState(null);
 
   const getTodos = async () => {
-    const res = await axios.get('http://localhost:5000/api/todos');
+    const res = await axios.get(`${API}/api/todos`);
     setTodos(res.data);
   };
 
@@ -18,18 +20,20 @@ function App() {
 
   const handleAddOrUpdate = async () => {
     if (!task.trim()) return;
+
     if (editId) {
-      await axios.put(`http://localhost:5000/api/todos/${editId}`, { task });
+      await axios.put(`${API}/api/todos/${editId}`, { task });
       setEditId(null);
     } else {
-      await axios.post('http://localhost:5000/api/todos', { task });
+      await axios.post(`${API}/api/todos`, { task });
     }
+
     setTask('');
     getTodos();
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:5000/api/todos/${id}`);
+    await axios.delete(`${API}/api/todos/${id}`);
     getTodos();
   };
 
